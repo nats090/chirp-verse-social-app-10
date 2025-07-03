@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { usersAPI, postsAPI, messagesAPI } from '../services/api';
+import { usersAPI, postsAPI } from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
-import { User, MessageSquare, UserPlus, UserCheck, Users } from 'lucide-react';
+import { User, UserPlus, UserCheck } from 'lucide-react';
 import PostCard from '../components/PostCard';
 import { UserProfile as UserProfileType, Post, Comment } from '../types';
 
@@ -118,22 +117,6 @@ const UserProfile = () => {
     followMutation.mutate();
   };
 
-  const handleMessage = async () => {
-    try {
-      await messagesAPI.sendMessage(userId!, `Hello ${userProfile?.username}!`);
-      toast({
-        title: "Message sent!",
-        description: "Your message has been sent successfully.",
-      });
-    } catch (error) {
-      toast({
-        title: "Failed to send message",
-        description: "Please try again later.",
-        variant: "destructive",
-      });
-    }
-  };
-
   const handleLike = (postId: string) => {
     likePostMutation.mutate(postId);
   };
@@ -193,7 +176,7 @@ const UserProfile = () => {
               </div>
 
               {!isOwnProfile && (
-                <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
+                <div className="flex justify-center sm:justify-start">
                   <button
                     onClick={handleFollow}
                     disabled={followMutation.isPending}
@@ -208,14 +191,6 @@ const UserProfile = () => {
                       {followStatus.isFollowing ? 'Following' : 'Follow'}
                       {followStatus.isFriend && ' (Friend)'}
                     </span>
-                  </button>
-
-                  <button
-                    onClick={handleMessage}
-                    className="flex items-center justify-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-                  >
-                    <MessageSquare size={16} />
-                    <span>Message</span>
                   </button>
                 </div>
               )}
