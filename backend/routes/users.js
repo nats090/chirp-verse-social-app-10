@@ -2,7 +2,6 @@
 const express = require('express');
 const User = require('../models/User');
 const Post = require('../models/Post');
-const Notification = require('../models/Notification');
 const auth = require('../middleware/auth');
 
 const router = express.Router();
@@ -147,16 +146,6 @@ router.put('/follow/:userId', auth, async (req, res) => {
       targetUser.followers.push(currentUserId);
       currentUser.followingCount += 1;
       targetUser.followersCount += 1;
-
-      // Create notification
-      const notification = new Notification({
-        recipient: targetUserId,
-        sender: currentUserId,
-        senderUsername: currentUser.username,
-        type: 'follow',
-        message: 'started following you'
-      });
-      await notification.save();
     }
 
     await currentUser.save();
