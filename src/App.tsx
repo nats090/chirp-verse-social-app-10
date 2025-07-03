@@ -22,8 +22,8 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent"></div>
       </div>
     );
   }
@@ -65,7 +65,7 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <ThemeProvider>
-            <div className="min-h-screen bg-gray-50">
+            <div className="min-h-screen bg-background text-foreground">
               <AppRoutes />
             </div>
           </ThemeProvider>
