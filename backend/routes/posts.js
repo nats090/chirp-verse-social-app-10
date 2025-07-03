@@ -2,7 +2,6 @@
 const express = require('express');
 const Post = require('../models/Post');
 const User = require('../models/User');
-const Notification = require('../models/Notification');
 const auth = require('../middleware/auth');
 
 const router = express.Router();
@@ -101,7 +100,6 @@ router.put('/:id/like', auth, async (req, res) => {
     }
 
     const userId = req.userId;
-    const user = await User.findById(userId);
     const isLiked = post.likedBy.includes(userId);
 
     if (isLiked) {
@@ -112,19 +110,6 @@ router.put('/:id/like', auth, async (req, res) => {
       // Like the post
       post.likedBy.push(userId);
       post.likes += 1;
-
-      // Create notification if not liking own post
-      if (post.authorId.toString() !== userId) {
-        const notification = new Notification({
-          recipient: post.authorId,
-          sender: userId,
-          senderUsername: user.username,
-          type: 'like',
-          message: 'liked your post',
-          postId: post._id
-        });
-        await notification.save();
-      }
     }
 
     await post.save();
@@ -224,19 +209,6 @@ router.post('/:id/comments', auth, async (req, res) => {
     post.comments.push(newComment);
     await post.save();
 
-    // Create notification if not commenting on own post
-    if (post.authorId.toString() !== req.userId) {
-      const notification = new Notification({
-        recipient: post.authorId,
-        sender: req.userId,
-        senderUsername: user.username,
-        type: 'comment',
-        message: 'commented on your post',
-        postId: post._id
-      });
-      await notification.save();
-    }
-
     const savedComment = post.comments[post.comments.length - 1];
     res.status(201).json({
       id: savedComment._id,
@@ -278,19 +250,6 @@ router.post('/:postId/comments/:commentId/replies', auth, async (req, res) => {
 
     comment.replies.push(newReply);
     await post.save();
-
-    // Create notification for comment author if not replying to own comment
-    if (comment.authorId.toString() !== req.userId) {
-      const notification = new Notification({
-        recipient: comment.authorId,
-        sender: req.userId,
-        senderUsername: user.username,
-        type: 'reply',
-        message: 'replied to your comment',
-        postId: post._id
-      });
-      await notification.save();
-    }
 
     const savedReply = comment.replies[comment.replies.length - 1];
     res.status(201).json({

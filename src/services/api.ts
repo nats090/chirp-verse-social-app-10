@@ -116,19 +116,3 @@ export const usersAPI = {
 
   getFollowers: () => apiRequest('/api/users/followers'),
 };
-
-// Messages API
-export const messagesAPI = {
-  getConversations: () => apiRequest('/api/messages/conversations'),
-  
-  getMessages: (userId: string) => apiRequest(`/api/messages/${userId}`),
-  
-  sendMessage: (recipientId: string, content: string) => apiRequest('/api/messages/send', {
-    method: 'POST',
-    body: JSON.stringify({ recipientId, content }),
-  }),
-
-  markAsRead: (partnerId: string) => apiRequest(`/api/messages/read/${partnerId}`, {
-    method: 'PUT',
-  }),
-};

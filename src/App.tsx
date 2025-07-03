@@ -5,12 +5,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
-import { SocketProvider } from "./contexts/SocketContext";
 import Header from "./components/Header";
 import Feed from "./pages/Feed";
 import Profile from "./pages/Profile";
 import Auth from "./pages/Auth";
-import Messages from "./pages/Messages";
 import Following from "./pages/Following";
 import UserProfile from "./pages/UserProfile";
 import NotFound from "./pages/NotFound";
@@ -42,17 +40,14 @@ const AppRoutes = () => {
       />
       <Route path="/*" element={
         <ProtectedRoute>
-          <SocketProvider>
-            <Header />
-            <Routes>
-              <Route path="/" element={<Feed />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/user/:userId" element={<UserProfile />} />
-              <Route path="/messages" element={<Messages />} />
-              <Route path="/following" element={<Following />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </SocketProvider>
+          <Header />
+          <Routes>
+            <Route path="/" element={<Feed />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/user/:userId" element={<UserProfile />} />
+            <Route path="/following" element={<Following />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </ProtectedRoute>
       } />
     </Routes>
