@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, User, Bell, MessageSquare, LogOut, Settings, Users } from 'lucide-react';
+import { Home, User, LogOut, Settings, Users } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 const Header = () => {
@@ -11,8 +11,6 @@ const Header = () => {
 
   const navItems = [
     { path: '/', icon: Home, label: 'Feed' },
-    { path: '/notifications', icon: Bell, label: 'Notifications' },
-    { path: '/messages', icon: MessageSquare, label: 'Messages' },
     { path: '/following', icon: Users, label: 'Following' },
     { path: '/profile', icon: User, label: 'Profile' },
   ];
@@ -108,7 +106,7 @@ const Header = () => {
 
           {/* Mobile Navigation */}
           <div className="md:hidden flex items-center space-x-4">
-            {navItems.slice(0, 4).map(({ path, icon: Icon }) => (
+            {navItems.map(({ path, icon: Icon }) => (
               <Link
                 key={path}
                 to={path}
